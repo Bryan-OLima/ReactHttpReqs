@@ -21,7 +21,17 @@ function App() {
       ProductService.setProduct(name, price);
     };
 
-    saveProduct(name, Number(price));
+    const parsedPrice = Number(price);
+
+    // This code part is how to add dynamicaly without consulting db
+    // const dummyProduct: IProudct = {
+    //   id: crypto.randomUUID(),
+    //   name,
+    //   price: parsedPrice,
+    // };
+
+    // setProducts((prev) => [...prev, dummyProduct]);
+    saveProduct(name, parsedPrice);
   };
 
   return (
@@ -56,7 +66,8 @@ function App() {
             placeholder="Preço"
           />
         </label>
-        <input type="submit" value="Salvar" />
+        {/* <input type="submit" value="Salvar" /> */}
+        <button onClick={handleSubmit}>Salvar</button>
       </form>
     </div>
   );

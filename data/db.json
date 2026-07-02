@@ -14,6 +14,16 @@
       "id": "test3",
       "name": "Boné de aba reta",
       "price": 29.9
+    },
+    {
+      "id": "e8HXd_fRJAE",
+      "name": "Calça de uma jovem",
+      "price": 301
+    },
+    {
+      "id": "D_rxbiiOd7k",
+      "name": "Mouse",
+      "price": 100
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
