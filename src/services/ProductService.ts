@@ -6,13 +6,13 @@ export const ProductService = {
   getAllProducts: async (): Promise<IProudct[]> => {
     try {
       const res = await fetch(url);
-      if (!res.ok) console.error("Erro na resposta de rede");
+      if (!res.ok) throw new Error("Erro na rede");
 
       const products = await res.json();
       return products;
-    } catch (e) {
+    } catch (e: unknown) {
       console.error(`Error at getting all products: ${e}`);
-      return [];
+      throw e;
     }
   },
 
@@ -23,7 +23,7 @@ export const ProductService = {
         name: name,
         price: price,
       };
-      post(product);
+      await post(product);
     } catch (e) {
       console.error(`Error at saving product in database ${e}`);
     }

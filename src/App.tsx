@@ -8,36 +8,47 @@ function App() {
   const [name, setName] = useState<string>("");
   const [price, setPrice] = useState<string>("");
 
-  const [loading, setLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isApiLoading, setIsApiLoading] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>();
 
-  const handleSubmit = () => {
-    const saveProduct = async (name: string, price: number): Promise<void> => {
-      ProductService.setProduct(name, price);
-    };
+  const handleIsApiLoading = () => {
+    setIsApiLoading((e) => !e);
+  };
 
-    const parsedPrice = Number(price);
+  const handleSubmit = async (e: React.SubmitEvent) => {
+    e.preventDefault();
+    handleIsApiLoading();
 
-    // This code part is how to add dynamicaly without consulting db
-    // const dummyProduct: IProudct = {
-    //   id: crypto.randomUUID(),
-    //   name,
-    //   price: parsedPrice,
-    // };
+    try {
+      const dummyProduct: IProudct = {
+        id: String(products.length + 1),
+        name,
+        price: Number(price),
+      };
 
-    // setProducts((prev) => [...prev, dummyProduct]);
-    saveProduct(name, parsedPrice);
+      setProducts((prev) => [...prev, dummyProduct]);
+      await ProductService.setProduct(name, Number(price));
+      setName("");
+      setPrice("");
+    } catch (e) {
+      console.error(e);
+    } finally {
+      handleIsApiLoading();
+      console.log(isApiLoading);
+    }
   };
 
   useEffect(() => {
     const loadProducts = async () => {
-      setLoading(true);
+      setIsLoading(true);
       try {
         const data = await ProductService.getAllProducts();
         setProducts(data);
-        setLoading(false);
+        setIsLoading(false);
       } catch (e) {
-        setLoading(false);
+        setIsLoading(false);
+        setIsApiLoading(true);
         console.error(e);
         setErrorMessage(
           "Erro ao tentar carregar os produtos. Recarregue a página ou aguarde alguns minutos",
@@ -50,15 +61,17 @@ function App() {
   return (
     <div className="app">
       <h1>Lista de Produtos</h1>
-      {loading && <p>Carregando Lista...</p>}
+      {isLoading && <p>Carregando Lista...</p>}
       {errorMessage}
-      <ul>
-        {products.map((p) => (
-          <li key={p.id}>
-            {p.name} - R$ {p.price}
-          </li>
-        ))}
-      </ul>
+      {!isLoading && (
+        <ul>
+          {products.map((p) => (
+            <li key={p.id}>
+              {p.name} - R$ {p.price}
+            </li>
+          ))}
+        </ul>
+      )}
       <hr />
       <form onSubmit={handleSubmit}>
         <label>
@@ -81,8 +94,8 @@ function App() {
             placeholder="Preço"
           />
         </label>
-        {/* <input type="submit" value="Salvar" /> */}
-        <button onClick={handleSubmit}>Salvar</button>
+        {isApiLoading && <button disabled>Aguarde...</button>}
+        {!isApiLoading && <button>Salvar</button>}
       </form>
     </div>
   );

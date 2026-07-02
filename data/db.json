@@ -16,14 +16,9 @@
       "price": 29.9
     },
     {
-      "id": "e8HXd_fRJAE",
+      "id": "DOpvGbeYf-c",
       "name": "Calça de uma jovem",
-      "price": 301
-    },
-    {
-      "id": "D_rxbiiOd7k",
-      "name": "Mouse",
-      "price": 100
+      "price": 309
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
