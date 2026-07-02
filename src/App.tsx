@@ -16,6 +16,20 @@ function App() {
     setIsApiLoading((e) => !e);
   };
 
+  const handleDeleteItems = async (id: string) => {
+    try {
+      await ProductService.deleteProduct(id);
+      setProducts((prev) => prev.filter((p) => p.id !== id));
+    } catch (e) {
+      setErrorMessage("Erro ao tentar deletar item");
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    console.log(products);
+  }, [products]);
+
   const handleSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
     handleIsApiLoading();
@@ -68,6 +82,7 @@ function App() {
           {products.map((p) => (
             <li key={p.id}>
               {p.name} - R$ {p.price}
+              <button onClick={() => handleDeleteItems(p.id)}>Deletar</button>
             </li>
           ))}
         </ul>

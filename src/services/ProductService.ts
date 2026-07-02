@@ -28,6 +28,24 @@ export const ProductService = {
       console.error(`Error at saving product in database ${e}`);
     }
   },
+
+  deleteProduct: async (id: string): Promise<void> => {
+    try {
+      const res = await fetch(`${url}/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!res.ok) throw new Error();
+      const json = await res.json();
+      console.log(`item ${json.name} deletado com sucesso`);
+    } catch (e) {
+      console.error(`Error at deleting ${e}`);
+      throw e;
+    }
+  },
 };
 
 const post = async (item: unknown) => {

@@ -1,24 +1,9 @@
 {
   "products": [
     {
-      "id": "test1",
-      "name": "Camisa",
-      "price": 59.9
-    },
-    {
-      "id": "teste2",
-      "name": "Calça Vermelha",
-      "price": 90
-    },
-    {
-      "id": "test3",
-      "name": "Boné de aba reta",
-      "price": 29.9
-    },
-    {
-      "id": "DOpvGbeYf-c",
+      "id": "sk5uFe7N_kQ",
       "name": "Calça de uma jovem",
-      "price": 309
+      "price": 432
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
