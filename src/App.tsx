@@ -8,13 +8,8 @@ function App() {
   const [name, setName] = useState<string>("");
   const [price, setPrice] = useState<string>("");
 
-  useEffect(() => {
-    const loadProducts = async () => {
-      const data = await ProductService.getAllProducts();
-      setProducts(data);
-    };
-    loadProducts();
-  }, []);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>();
 
   const handleSubmit = () => {
     const saveProduct = async (name: string, price: number): Promise<void> => {
@@ -34,9 +29,29 @@ function App() {
     saveProduct(name, parsedPrice);
   };
 
+  useEffect(() => {
+    const loadProducts = async () => {
+      setLoading(true);
+      try {
+        const data = await ProductService.getAllProducts();
+        setProducts(data);
+        setLoading(false);
+      } catch (e) {
+        setLoading(false);
+        console.error(e);
+        setErrorMessage(
+          "Erro ao tentar carregar os produtos. Recarregue a página ou aguarde alguns minutos",
+        );
+      }
+    };
+    loadProducts();
+  }, []);
+
   return (
     <div className="app">
       <h1>Lista de Produtos</h1>
+      {loading && <p>Carregando Lista...</p>}
+      {errorMessage}
       <ul>
         {products.map((p) => (
           <li key={p.id}>
